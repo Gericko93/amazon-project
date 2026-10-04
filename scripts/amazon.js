@@ -1,4 +1,4 @@
-import {cart} from "../data/cart.js";
+import {cart, addToCart} from "../data/cart.js";
 import {products} from "../data/products.js";
 
 let productsHTML ="";
@@ -61,8 +61,44 @@ document.querySelector(".js-products-grid").innerHTML = productsHTML;
 let timer = null;
 document.querySelectorAll('.js-add-to-cart-button').forEach((button)=>{
   button.addEventListener("click",()=>{
+    //best practice when coding: separate different stuff in functions
     const {productId} = button.dataset;
+    addedMessage(productId)
+    addToCart(productId)
+    calculateQuantity()
+  })
+})
 
+//calculateQuantity will not go into cart.js because it calculates a value for the main page, not the cart page, and it's not changing anything on the cart.
+function calculateQuantity(){
+      let totalQuantity =0;
+      cart.forEach((cartItem)=>{
+      totalQuantity+=cartItem.quantity;
+    })
+    document.querySelector(".js-cart-quantity").textContent = totalQuantity
+}//best practice is to group related code together in its own  file
+/*
+function addToCart(productId){
+      let quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value)
+    let matchingItem;
+    cart.forEach((cartItem)=>{
+      if (productId === cartItem.productId){
+        matchingItem  = cartItem;
+      }
+    })
+    if (matchingItem){
+      matchingItem.quantity+=quantity
+    }
+
+    else{
+      cart.push({
+        productId,
+        quantity
+      })
+    }
+}
+*/
+function addedMessage(productId){
     const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
     if (addedMessage.classList.contains("visible")){
       addedMessage.classList.remove("visible");
@@ -79,28 +115,4 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((button)=>{
       addedMessage.classList.remove("visible");
     },2000)
     }
-   
-    let quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value)
-    let matchingItem;
-    cart.forEach((item)=>{
-      if (productId === item.productId){
-        matchingItem  = item;
-      }
-    })
-    if (matchingItem){
-      matchingItem.quantity+=quantity
-    }
-
-    else{
-      cart.push({
-        productId,
-        quantity
-      })
-    }
-    let totalQuantity =0;
-    cart.forEach((item)=>{
-      totalQuantity+=item.quantity;
-    })
-    document.querySelector(".js-cart-quantity").textContent = totalQuantity
-  })
-})
+}
