@@ -1,4 +1,4 @@
-import {cart, addToCart} from "../data/cart.js";
+import {addToCart, calculateQuantity} from "../data/cart.js";
 import {products} from "../data/products.js";
 import {formatCurrency} from "./utils/money.js"
 
@@ -66,18 +66,12 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((button)=>{
     const {productId} = button.dataset;
     addedMessage(productId)
     addToCart(productId)
-    calculateQuantity()
+    document.querySelector(".js-cart-quantity").textContent = calculateQuantity();
   })
 })
 
 //calculateQuantity will not go into cart.js because it calculates a value for the main page, not the cart page, and it's not changing anything on the cart.
-function calculateQuantity(){
-      let totalQuantity =0;
-      cart.forEach((cartItem)=>{
-      totalQuantity+=cartItem.quantity;
-    })
-    document.querySelector(".js-cart-quantity").textContent = totalQuantity
-}//best practice is to group related code together in its own  file
+//best practice is to group related code together in its own  file
 /*
 function addToCart(productId){
       let quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value)

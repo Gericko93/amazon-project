@@ -34,5 +34,17 @@ export function removeFromCart(productId){
     }
   })
   cart = newCart;
+  showItemscheckOut ()
   saveToStorage();
+}
+
+export function calculateQuantity(){
+      let totalQuantity =0;
+      cart.forEach((cartItem)=>{
+      totalQuantity+=cartItem.quantity;
+    })
+    return totalQuantity;
+}
+export function showItemscheckOut (){
+  document.querySelector(".js-items-checkout").textContent = `${calculateQuantity()} items`;
 }

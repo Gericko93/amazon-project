@@ -1,9 +1,11 @@
 //cart has quantity and productId, so we will use that to generate this thing
 //we will look the productIDd from cart.js to products.js
 //"normalizing the data"
-import {cart, removeFromCart} from "../data/cart.js"
+import {cart, removeFromCart,showItemscheckOut} from "../data/cart.js"
 import {products} from "../data/products.js"
 import {formatCurrency} from "./utils/money.js"
+
+showItemscheckOut()
 let checkoutHTML = ""
 cart.forEach((cartItem)=>{
   let {productId, quantity} = cartItem
@@ -35,9 +37,11 @@ cart.forEach((cartItem)=>{
                   <span>
                     Quantity: <span class="quantity-label">${quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id ="${matchingProduct.id}">
                     Update
                   </span>
+                  <input class="quantity-input">
+                  <span class="save-quantity-link link-primary">Save</span>
                   <span class="delete-quantity-link link-primary js-delete-link" data-id="${matchingProduct.id}">
                     Delete
                   </span>
@@ -107,6 +111,12 @@ document.querySelectorAll('.js-delete-link').forEach((button)=>{
 })
 
 
+document.querySelectorAll(".js-update-quantity-link").forEach((button)=>{
+  button.addEventListener("click", ()=>{
+    const {productId} = button.dataset;
+    console.log(productId);
+  })
+})
 
 
 
